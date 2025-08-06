@@ -1,22 +1,66 @@
-    <!-- Scripts -->
-    <script defer>
-      // Breaking news ticker clock
-      (function(){const h = document.getElementById('bn-hour'), m = document.getElementById('bn-minute'), s = document.getElementById('bn-second'); function pad2(n){ return n < 10 ? '0' + n : n; } function updateTime(){ const now = new Date(); h.textContent = pad2(now.getHours()); m.textContent = pad2(now.getMinutes()); s.textContent = pad2(now.getSeconds()); } function startClock(){ updateTime(); setTimeout(function tick(){ updateTime(); setTimeout(tick, 1000 - new Date().getMilliseconds()); }, 1000 - new Date().getMilliseconds()); } if (document.readyState === 'complete'){ startClock(); } else { window.addEventListener('load', startClock); }})();
-      // Expandir e colapsar resumo
-      document.addEventListener('DOMContentLoaded', function(){const resumoHeader = document.getElementById('resumoHeader'); if (resumoHeader){ const label = resumoHeader.querySelector('.resumo-label'); const icon = resumoHeader.querySelector('.resumo-icon'); const body = resumoHeader.nextElementSibling; resumoHeader.addEventListener('click', () => { const willExpand = !resumoHeader.classList.contains('active'); resumoHeader.classList.toggle('active'); body.style.display = willExpand ? 'block' : 'none'; label.textContent = willExpand ? 'Resumo' : 'Ver resumo'; icon.textContent = willExpand ? '▲' : '▼'; }); }});
-      // Geolocalização
-      document.addEventListener('DOMContentLoaded', function(){const citySpan = document.getElementById('user-city'); const notice = document.getElementById('shipping-notice'); if (citySpan && notice){ fetch('https://ipapi.co/json/').then(r => r.json()).then(d => { if (d && d.city){ citySpan.textContent = d.city; notice.style.display = 'block'; } }).catch(() => {}); }});
-      // Lazy load comments
-      document.addEventListener('DOMContentLoaded', function(){const placeholder = document.getElementById('comments-placeholder'); const template = document.getElementById('comments-template'); function loadComments(){ const clone = template.content.cloneNode(true); placeholder.replaceWith(clone); document.querySelectorAll('.reaction').forEach(function(el){ el.addEventListener('click', function(){ if (el.dataset.clicked === 'true') return; el.dataset.clicked = 'true'; const countSpan = el.querySelector('span:last-child'); const count = parseInt(countSpan.textContent.trim(), 10); countSpan.textContent = count + 1; }); }); } if ('IntersectionObserver' in window){ const observer = new IntersectionObserver((entries, obs) => { entries.forEach(entry => { if (entry.isIntersecting){ loadComments(); obs.disconnect(); } }); }, { rootMargin: '200px 0px', threshold: 0 }); observer.observe(placeholder); } else { loadComments(); } });
-      // Lazy load Lottie animations
-      document.addEventListener('DOMContentLoaded', function(){const players = document.querySelectorAll('lottie-player'); players.forEach(player => { const src = player.getAttribute('src'); if (src){ player.setAttribute('data-src', src); player.removeAttribute('src'); } }); function initPlayer(player){ const dataSrc = player.getAttribute('data-src'); if (dataSrc && !player.getAttribute('src')){ player.setAttribute('src', dataSrc); } } if ('IntersectionObserver' in window){ const lottieObs = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting){ initPlayer(entry.target); lottieObs.unobserve(entry.target); } }); }, { rootMargin: '200px', threshold: 0.1 }); players.forEach(p => lottieObs.observe(p)); } else { players.forEach(initPlayer); } });
-      // Player de áudio com WaveSurfer
-      document.addEventListener('DOMContentLoaded', function(){let wavesurferInstance; const playBtn = document.getElementById('play-btn'); const audioElement = document.getElementById('audio-element'); const audioTime = document.getElementById('audio-time'); const playbackRateBtn = document.getElementById('playback-rate'); const speeds = [1, 1.25, 1.5, 2]; let speedIdx = 0; function loadWaveSurfer(callback){ if (window.WaveSurfer){ callback(); return; } const script = document.createElement('script'); script.src = 'https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js'; script.onload = callback; document.head.appendChild(script); } function initialiseWaveSurfer(){ if (wavesurferInstance) return; if (!audioElement.src && audioElement.dataset && audioElement.dataset.src){ audioElement.src = audioElement.dataset.src; try { audioElement.load(); } catch(e){} } loadWaveSurfer(() => { wavesurferInstance = WaveSurfer.create({ container: '#waveform', waveColor: '#f9b7b7', progressColor: '#d32f2f', height: 50, cursorWidth: 0, barWidth: 2, barGap: 2, media: audioElement }); wavesurferInstance.on('audioprocess', () => { const curr = wavesurferInstance.getCurrentTime(); audioTime.textContent = `${Math.floor(curr/60)}:${String(Math.floor(curr % 60)).padStart(2,'0')}`; }); wavesurferInstance.on('ready', () => { const duration = wavesurferInstance.getDuration(); audioTime.textContent = `${Math.floor(duration/60)}:${String(Math.floor(duration % 60)).padStart(2,'0')}`; }); document.getElementById('waveform').onclick = () => { wavesurferInstance.playPause(); playBtn.textContent = wavesurferInstance.isPlaying() ? '❚❚' : '▶︎'; }; }); } if (playBtn){ playBtn.addEventListener('click', () => { initialiseWaveSurfer(); if (wavesurferInstance){ wavesurferInstance.playPause(); playBtn.textContent = wavesurferInstance.isPlaying() ? '❚❚' : '▶︎'; } }); } if (playbackRateBtn){ playbackRateBtn.addEventListener('click', () => { initialiseWaveSurfer(); if (wavesurferInstance){ speedIdx = (speedIdx + 1) % speeds.length; wavesurferInstance.setPlaybackRate(speeds[speedIdx]); playbackRateBtn.textContent = speeds[speedIdx].toFixed(2) + 'x'; } }); } });
-      // Bar animations (prontuário, final results, comparativo)
-      document.addEventListener('DOMContentLoaded', function(){const targets = document.querySelectorAll('[data-target]'); function setTarget(el){ const pct = el.dataset.target; if (!pct) return; if (el.classList.contains('barra-preenchimento-positivo') || el.classList.contains('barra-preenchimento-negativo')){ el.style.height = pct; } else { el.style.width = pct; } } if ('IntersectionObserver' in window){ const barObs = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting){ setTarget(entry.target); barObs.unobserve(entry.target); } }); }, { threshold: 0.3 }); targets.forEach(el => barObs.observe(el)); } else { targets.forEach(setTarget); } });
-      // Progress bar, viewer count, countdown, stock reduction, toast and exit modal
-      document.addEventListener('DOMContentLoaded', function(){const progress = document.getElementById('scroll-progress'); const progressLabel = document.getElementById('progress-label'); const floatingCta = document.getElementById('floating-cta'); const viewerCountEl = document.getElementById('viewer-count'); const countdownTimerEl = document.getElementById('countdown-timer'); const floatingCountdownEl = document.getElementById('floating-countdown'); const exitModal = document.getElementById('exit-modal'); const exitClose = document.getElementById('exit-close'); const purchaseToast = document.getElementById('purchase-toast'); const stockNumberEl = document.getElementById('stock-number'); const scrollTopBtn = document.getElementById('scroll-top'); const whatsappBtn = document.getElementById('whatsapp-support'); const couponBtn = document.getElementById('copy-coupon'); const couponToast = document.getElementById('coupon-toast'); const couponCode = document.getElementById('coupon-code'); let remaining = 15 * 60; let stock = stockNumberEl ? parseInt(stockNumberEl.textContent, 10) : 24; const buyers = ['Maria (SP)', 'Ana (RJ)', 'Cláudia (MG)', 'Patrícia (BA)', 'Luciana (PR)', 'Fernanda (PE)']; if (couponBtn && couponCode && couponToast){ couponBtn.addEventListener('click', function(){ navigator.clipboard.writeText(couponCode.textContent).then(() => { couponToast.style.display = 'block'; setTimeout(() => { couponToast.style.display = 'none'; }, 2000); }); }); } function updateProgress(){ const docHeight = document.documentElement.scrollHeight - window.innerHeight; const scrolled = (window.scrollY / docHeight) * 100; progress.style.width = scrolled + '%'; if (progressLabel) progressLabel.textContent = Math.round(scrolled) + '% lido'; const finalBox = document.querySelector('.final-box'); const finalRect = finalBox ? finalBox.getBoundingClientRect() : null; const finalVisible = finalRect && finalRect.top < window.innerHeight && finalRect.bottom > 0; if (window.scrollY > 800 && !finalVisible){ floatingCta.style.display = 'block'; } else { floatingCta.style.display = 'none'; } if (scrollTopBtn) scrollTopBtn.style.display = window.scrollY > 800 ? 'flex' : 'none'; if (whatsappBtn) whatsappBtn.style.display = window.scrollY > 400 ? 'flex' : 'none'; } function updateViewer(){ if (viewerCountEl){ const count = Math.floor(Math.random() * 30) + 15; viewerCountEl.textContent = count + ' pessoas estão vendo esta oferta agora'; } } const originalTitle = document.title; function updateCountdown(){ const minutes = String(Math.floor(remaining / 60)).padStart(2, '0'); const seconds = String(remaining % 60).padStart(2, '0'); if (countdownTimerEl) countdownTimerEl.textContent = minutes + ':' + seconds; if (floatingCountdownEl) floatingCountdownEl.textContent = minutes + ':' + seconds; document.title = '(' + minutes + ':' + seconds + ') ' + originalTitle.replace(/^\(\d{2}:\d{2}\)\s*/, ''); if (remaining > 0) remaining--; } function showToast(){ const buyer = buyers[Math.floor(Math.random() * buyers.length)]; purchaseToast.textContent = buyer + ' acabou de comprar PURAH'; purchaseToast.classList.add('show'); setTimeout(() => { purchaseToast.classList.remove('show'); }, 5000); } function reduceStock(){ if (stockNumberEl && stock > 7){ stock--; stockNumberEl.textContent = stock; } } function showExit(){ if (!exitModal.dataset.shown){ exitModal.style.display = 'flex'; exitModal.dataset.shown = 'true'; } } window.addEventListener('scroll', updateProgress); updateProgress(); updateViewer(); updateCountdown(); setInterval(updateViewer, 7000); setInterval(updateCountdown, 1000); setTimeout(showToast, 8000); setInterval(showToast, 25000); setInterval(reduceStock, 20000); document.addEventListener('mouseleave', function(e){ if (e.clientY <= 0){ showExit(); } }); if (exitClose){ exitClose.addEventListener('click', function(){ exitModal.style.display = 'none'; }); } if (scrollTopBtn){ scrollTopBtn.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); }); } document.addEventListener('visibilitychange', function(){ if (document.hidden){ document.title = 'Volte! 40% OFF ainda disponível'; } else { updateCountdown(); } }); });
-      // Atualiza a data de validade com a data atual
-      document.addEventListener('DOMContentLoaded', function(){ const hoje = new Date(); const dia = String(hoje.getDate()).padStart(2,'0'); const mes = String(hoje.getMonth() + 1).padStart(2,'0'); const ano = hoje.getFullYear(); const dataSpan = document.getElementById('data-hoje'); if (dataSpan){ dataSpan.textContent = `${dia}/${mes}/${ano}`; } });
-    </script>
-    </div>
+/**
+ * Script para carregar e injetar o conteúdo do advertorial PURAH.
+ *
+ * Este arquivo assume que o HTML original do advertorial (incluindo
+ * markup e scripts) foi salvo como `purah_original.html` dentro da
+ * pasta `public` do projeto. Ao carregar a página, o script busca
+ * esse arquivo, extrai o corpo e executa os scripts em ordem, de
+ * forma que a página seja reproduzida exatamente como no site de
+ * referência. O resultado final é exposto via `window.purahHtml`,
+ * utilizado pelo componente Qwik para renderizar o conteúdo.
+ */
+
+(() => {
+  /**
+   * Converte uma string HTML em um objeto contendo o corpo e os
+   * scripts embutidos. Utiliza DOMParser para manipular o HTML
+   * inteiramente no lado do cliente.
+   *
+   * @param {string} html Documento HTML completo
+   * @returns {{ bodyHtml: string, scripts: string[] }}
+   */
+  function parseHtml(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const bodyHtml = doc.body ? doc.body.innerHTML : '';
+    const scripts = Array.from(doc.querySelectorAll('script'))
+      .map((el) => el.textContent || '');
+    return { bodyHtml, scripts };
+  }
+
+  /**
+   * Faz o fetch do arquivo `purah_original.html` localizado na mesma
+   * origem. Após o download, popula `window.purahHtml` com o conteúdo
+   * do corpo e executa sequencialmente todos os scripts encontrados.
+   * Caso ocorra algum erro, ele será reportado no console.
+   */
+  async function loadPurahAdvertorial() {
+    try {
+      const response = await fetch('/purah_original.html', { cache: 'reload' });
+      if (!response.ok) {
+        throw new Error(`Falha ao carregar o advertorial (status ${response.status})`);
+      }
+      const html = await response.text();
+      const { bodyHtml, scripts } = parseHtml(html);
+      window.purahHtml = bodyHtml;
+      // Executa cada script na ordem original
+      for (const code of scripts) {
+        try {
+          // eslint-disable-next-line no-eval
+          eval(code);
+        } catch (err) {
+          console.error('Erro ao executar script do advertorial:', err);
+        }
+      }
+    } catch (err) {
+      console.error('Erro ao carregar o advertorial:', err);
+    }
+  }
+
+  // Aguarda o carregamento total da página para iniciar o fetch
+  if (document.readyState === 'complete') {
+    loadPurahAdvertorial();
+  } else {
+    window.addEventListener('load', () => loadPurahAdvertorial());
+  }
+})();
