@@ -21,7 +21,7 @@
 
   async function loadPurahAdvertorial() {
     try {
-      const response = await fetch('/purah_original.html', { cache: 'reload' });
+      const response = await fetch('/purah_original.txt', { cache: 'reload' });
       if (!response.ok) {
         throw new Error(
           `Falha ao carregar o advertorial (status ${response.status})`,
