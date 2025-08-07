@@ -7,9 +7,8 @@
  * - https://qwik.dev/docs/deployments/cloudflare-pages/
  *
  */
-import {
-  createQwikCity,
-  type PlatformCloudflarePages,
+import { createQwikCity } from '@builder.io/qwik-city/middleware/cloudflare-pages';
+import type { PlatformCloudflarePages } from '@builder.io/qwik-city/middleware/cloudflare-pages';
 } from '@builder.io/qwik-city/middleware/cloudflare-pages';
 import qwikCityPlan from '@qwik-city-plan';
 import render from './entry.ssr';
