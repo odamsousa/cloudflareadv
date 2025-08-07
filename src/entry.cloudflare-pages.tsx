@@ -9,7 +9,6 @@
  */
 import { createQwikCity } from '@builder.io/qwik-city/middleware/cloudflare-pages';
 import type { PlatformCloudflarePages } from '@builder.io/qwik-city/middleware/cloudflare-pages';
-} from '@builder.io/qwik-city/middleware/cloudflare-pages';
 import render from './entry.ssr';
 
 /* eslint-disable @typescript-eslint/no-empty-interface */
