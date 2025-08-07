@@ -1,47 +1,23 @@
 /*
- * WHAT IS THIS FILE?
- *
- * It's the entry point for Cloudflare Pages when building for production.
- *
- * Learn more about the Cloudflare Pages integration here:
- * - https://qwik.dev/docs/deployments/cloudflare-pages/
- *
+ * Entry point para Cloudflare Pages em produção.
+ * Define o handler de fetch que integra Qwik City e o plano de rotas.
  */
 import {
   createQwikCity,
   type PlatformCloudflarePages,
 } from '@builder.io/qwik-city/middleware/cloudflare-pages';
-
 import qwikCityPlan from '@qwik-city-plan';
 import render from './entry.ssr';
 
+// Personalize a interface Platform caso precise incluir bindings adicionais
 export interface Platform extends PlatformCloudflarePages {}
 
+// Estende a interface global de plataforma usada pelo Qwik City
 declare global {
   interface QwikCityPlatform extends Platform {}
 }
 
-const fetch = createQwikCity({ render, qwikCityPlan });
-
-export { fetch };
-
-
-
-/* eslint-disable @typescript-eslint/no-empty-interface */
-// Extend the default PlatformCloudflarePages interface with any custom
-// platform-specific types. For now we simply extend it directly.
-export interface Platform extends PlatformCloudflarePages {}
-
-declare global {
-  // Extend QwikCityPlatform with our custom Platform definition. This is
-  // required so Qwik City knows about the types available on the Platform.
-  interface QwikCityPlatform extends Platform {}
-}
-
-// Create the Cloudflare Pages fetch handler.  This function will be
-// automatically invoked by Cloudflare when a request comes in.  It
-// wraps the Qwik City SSR renderer and provides the Qwik City plan
-// for routing and rendering your application.
+// Cria o handler de fetch para Cloudflare Pages
 const fetch = createQwikCity({ render, qwikCityPlan });
 
 export { fetch };
