@@ -5,8 +5,7 @@ import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
  * Componente RouterHead, responsável por preencher o conteúdo da tag <head>.
  *
  * Ele extrai as informações de título, metas, links, estilos e scripts
- * através do hook useDocumentHead() e, opcionalmente, adiciona a tag
- * canonical via useLocation() para SEO.
+ * através do hook useDocumentHead() e adiciona a tag canonical via useLocation().
  */
 export const RouterHead = component$(() => {
   const head = useDocumentHead();
