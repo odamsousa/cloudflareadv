@@ -7,10 +7,24 @@
  * - https://qwik.dev/docs/deployments/cloudflare-pages/
  *
  */
-import { createQwikCity } from '@builder.io/qwik-city/middleware/cloudflare-pages';
-import type { PlatformCloudflarePages } from '@builder.io/qwik-city/middleware/cloudflare-pages';
+import {
+  createQwikCity,
+  type PlatformCloudflarePages,
+} from '@builder.io/qwik-city/middleware/cloudflare-pages';
 import qwikCityPlan from '@qwik-city-plan';
 import render from './entry.ssr';
+
+// Opcional: declare uma interface Platform caso precise estender tipos da plataforma.
+export interface Platform extends PlatformCloudflarePages {}
+
+declare global {
+  interface QwikCityPlatform extends Platform {}
+}
+
+const fetch = createQwikCity({ render, qwikCityPlan });
+
+export { fetch };
+
 
 /* eslint-disable @typescript-eslint/no-empty-interface */
 // Extend the default PlatformCloudflarePages interface with any custom
