@@ -14,7 +14,6 @@ import {
 import qwikCityPlan from '@qwik-city-plan';
 import render from './entry.ssr';
 
-// Opcional: declare uma interface Platform caso precise estender tipos da plataforma.
 export interface Platform extends PlatformCloudflarePages {}
 
 declare global {
@@ -24,6 +23,7 @@ declare global {
 const fetch = createQwikCity({ render, qwikCityPlan });
 
 export { fetch };
+
 
 
 /* eslint-disable @typescript-eslint/no-empty-interface */
