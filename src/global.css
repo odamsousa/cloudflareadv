@@ -1,10 +1,10 @@
 /*
  * Folha de estilos global do advertorial.
  *
- * As regras abaixo combinam um pequeno reset (remoÃ§Ã£o de margens e
- * espaÃ§amentos padrÃ£o) com todos os estilos extraÃ­dos do CSS
- * embutido no arquivo HTML original. Isso garante a reproduÃ§Ã£o
- * pixelâ€‘aâ€‘pixel do conteÃºdo sem depender de classes ou estruturas
+ * As regras abaixo combinam um pequeno reset (remoção de margens e
+ * espaçamentos padrão) com todos os estilos extraídos do CSS
+ * embutido no arquivo HTML original. Isso garante a reprodução
+ * pixel‑a‑pixel do conteúdo sem depender de classes ou estruturas
  * adicionais.
  */
 html,
@@ -14,12 +14,12 @@ body {
   font-family: sans-serif;
 }
 
-/* ContÃªiner utilizado pela rota principal para injeÃ§Ã£o dinÃ¢mica do HTML */
+/* Contêiner utilizado pela rota principal para injeção dinâmica do HTML */
 #purah-container {
   width: 100%;
 }
 
-/* InÃ­cio dos estilos do advertorial extraÃ­dos do HTML original */
+/* Início dos estilos do advertorial extraídos do HTML original */
 #purah-advertorial {
         --verde-claro: #6bcb77;
         --verde-escuro: #1a8731;
@@ -42,7 +42,7 @@ body {
       #purah-advertorial a:hover {
         text-decoration: underline;
       }
-      /* TÃ­tulos */
+      /* Títulos */
       #purah-advertorial h1 {
         font-size: 25px;
         font-weight: 700;
@@ -59,14 +59,14 @@ body {
         font-weight: 700;
         color: #111;
       }
-      /* ParÃ¡grafos */
+      /* Parágrafos */
       #purah-advertorial p {
         margin: 7px;
         padding: 7px;
         line-height: 1.6;
         color: #2c2c2c;
       }
-      /* InformaÃ§Ãµes do autor */
+      /* Informações do autor */
       #purah-advertorial #autor-info {
         display: flex;
         align-items: center;
@@ -81,7 +81,7 @@ body {
         object-fit: cover;
         flex-shrink: 0;
       }
-      /* Resumo expansÃ­vel */
+      /* Resumo expansível */
       #purah-advertorial .resumo-wrapper {
         border: 1px solid #e0e0e0;
         margin: 10px;
@@ -120,7 +120,7 @@ body {
         display: none;
         margin-top: 10px;
       }
-      /* Faixa de avaliaÃ§Ã£o */
+      /* Faixa de avaliação */
       #purah-advertorial .rating-strip {
         display: flex;
         justify-content: start;
@@ -141,7 +141,6 @@ body {
       }
       /* Aviso de cidade */
       .city-notice {
-        /* Melhor contraste de cor para acessibilidade: usar fundo claro e texto escuro */
         background: #ffffff;
         color: #1a8731;
         text-align: center;
@@ -154,7 +153,7 @@ body {
       .city-notice span {
         font-weight: 700;
       }
-      /* VÃ­deo principal */
+      /* Vídeo principal */
       #purah-advertorial .video-loop {
         width: auto;
         max-width: auto;
@@ -175,7 +174,7 @@ body {
         text-align: center;
         margin-top: 0;
       }
-      /* Bloco de citaÃ§Ã£o - clone do CT */
+      /* Bloco de citação - clone do CT */
       #purah-advertorial .citacao-bloco {
         margin-top: 10px;
         margin-bottom: 10px;
@@ -201,7 +200,7 @@ body {
         padding: 10px;
         color: #000;
       }
-      /* ProntuÃ¡rio (resultados) */
+      /* Prontuário (resultados) */
       #purah-advertorial .prontuario-historico {
         max-width: 720px;
         margin: 20px 7px;
@@ -315,8 +314,9 @@ body {
       #purah-advertorial details.marker summary::before {
         content: '+';
       }
-      #purah-advertorial details.marker[open] summary::before {
-        content: 'â€“';
+#purah-advertorial details.marker[open] summary::before {
+        /* Usamos o verdadeiro sinal de menos (Unicode U+2212) para evitar substituições indevidas */
+        content: '−';
       }
       #purah-advertorial lottie-player {
         display: inline-block;
@@ -507,7 +507,7 @@ body {
         color: #666;
         line-height: 1.4;
       }
-      /* SeÃ§Ã£o de censura */
+      /* Seção de censura */
       #purah-advertorial .purah-censura h2 {
         font-size: 20px;
         font-weight: 700;
@@ -568,7 +568,7 @@ body {
         width: 0;
         transition: width 1.2s ease;
       }
-      /* SeÃ§Ã£o de garantia */
+      /* Seção de garantia */
       #purah-advertorial .garantia-section h2 {
         font-size: 20px;
         color: #b71c1c;
@@ -586,16 +586,23 @@ body {
         margin: 40px auto 20px;
         text-align: center;
       }
-      #purah-advertorial .cta-image img {
-        width: 100%;
-        max-width: 990px;
-        border-radius: 8px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-      #purah-advertorial .cta-image img:hover {
-        transform: scale(1.02);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-      }
+#purah-advertorial .cta-image img {
+  /*
+   * Tornamos a imagem responsiva independentemente do tamanho da tela.
+   *  - width: 100% faz com que a imagem se ajuste à largura do contêiner
+   *  - max-width: 100% evita que ultrapasse a largura do contêiner
+   *  - height: auto preserva a proporção original, evitando distorções
+   */
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+#purah-advertorial .cta-image img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
       #purah-advertorial .final-box {
         text-align: center;
         max-width: 780px;
@@ -662,7 +669,7 @@ body {
         color: #555;
         margin-top: 5px;
       }
-      /* ComentÃ¡rios */
+      /* Comentários */
       .comments-container {
         max-width: 820px;
         margin: 40px auto;
@@ -1014,7 +1021,7 @@ body {
         text-align: center;
         margin-top: 15px;
       }
-      /* SeÃ§Ã£o de FAQ */
+      /* Seção de FAQ */
       .faq-section {
         max-width: 720px;
         margin: 40px auto;
@@ -1050,14 +1057,14 @@ body {
         line-height: 1;
       }
       .faq-section details[open] summary::after {
-        content: 'â€“';
+        content: '–';
       }
       .faq-section p {
         margin-top: 8px;
         font-size: 14px;
         color: #444;
       }
-      /* AnimaÃ§Ãµes de entrada */
+      /* Animações de entrada */
       [data-animate] {
         opacity: 0;
         transform: translateY(20px);
@@ -1138,7 +1145,7 @@ body {
         align-items: center;
         justify-content: space-between;
         padding: 0.7em;
-        /* Define uma altura mÃ­nima para evitar deslocamento de layout enquanto as fontes carregam */
+        /* Define uma altura mínima para evitar deslocamento de layout enquanto as fontes carregam */
         min-height: 48px;
       }
       #atomic-bn-urgent {
@@ -1250,7 +1257,7 @@ body {
         display: none;
         z-index: 10000;
       }
-      /* CentralizaÃ§Ã£o do conteÃºdo no desktop */
+      /* Centralização do conteúdo no desktop */
       @media (min-width: 768px) {
         .purah-container {
           max-width: 720px;
