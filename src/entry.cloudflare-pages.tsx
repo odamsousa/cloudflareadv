@@ -9,16 +9,16 @@
  */
 import {
   createQwikCity,
-  type PlatformCloudflarePages = object;
+  type PlatformCloudflarePages
 } from "@builder.io/qwik-city/middleware/cloudflare-pages";
 import qwikCityPlan from "@qwik-city-plan";
 import render from "./entry.ssr";
 
 /* eslint-disable @typescript-eslint/no-empty-interface */
-export interface Platform {}
+export interface Platform extends PlatformCloudflarePages {}
 
 declare global {
-  interface QwikCityPlatform extends PlatformCloudflarePages {}
+  interface QwikCityPlatform extends Platform {}
 }
 
 const fetch = createQwikCity({ render, qwikCityPlan });
