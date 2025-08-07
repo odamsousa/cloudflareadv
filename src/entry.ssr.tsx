@@ -10,14 +10,17 @@
  * - npm run build
  *
  */
-import { renderToStream, type RenderToStreamOptions } from '@builder.io/qwik/server';
+import {
+  renderToStream,
+  type RenderToStreamOptions,
+} from '@builder.io/qwik/server';
 import Root from './root';
 
 export default function (opts: RenderToStreamOptions) {
   return renderToStream(<Root />, {
     ...opts,
     containerAttributes: {
-      lang: 'en-us',
+      lang: 'pt-BR',
       ...opts.containerAttributes,
     },
     serverData: {
@@ -25,3 +28,4 @@ export default function (opts: RenderToStreamOptions) {
     },
   });
 }
+
