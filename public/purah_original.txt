@@ -12,6 +12,9 @@
     <title>Cápsula sublingual rejuvenesce 10 anos de pele em 94 dias – Estudo PURAH</title>
 
     <!-- Pré-conexões otimizadas -->
+<link rel="preload" as="image"
+      href="/assets/videoframe_8766.png"
+      fetchpriority="high">
     <!-- Priorize Cloudflare Stream e Cloudflare Images para o hero e demais imagens -->
     <link rel="preconnect" href="https://customer-p808i35lew3u4tym.cloudflarestream.com" crossorigin>
     <link rel="dns-prefetch" href="//customer-p808i35lew3u4tym.cloudflarestream.com">
